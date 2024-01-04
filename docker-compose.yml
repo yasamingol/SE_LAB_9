@@ -3,7 +3,7 @@ version: '3'
 services:
   validator-service:
     build:
-      context: ./validator-service
+      context: ./validator_service
     ports:
       - "3001:3000"
     depends_on:
@@ -11,7 +11,7 @@ services:
 
   add-service:
     build:
-      context: ./add-service
+      context: ./add_service
     ports:
       - "3002:3000"
     depends_on:
