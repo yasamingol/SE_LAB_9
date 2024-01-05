@@ -17,7 +17,25 @@ const NumberSchema = new mongoose.Schema({
     },
 });
 
+const ResultSchema = new mongoose.Schema({
+    number1Id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Number',
+        required: true,
+    },
+    number2Id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Number',
+        required: true,
+    },
+    result: {
+        type: Number,
+        required: true,
+    },
+});
+
 const NumberModel = mongoose.model('Number', NumberSchema);
+const ResultModel = mongoose.model('Result', ResultSchema);
 
 app.use(express.json());
 
@@ -25,9 +43,6 @@ app.post('/add', async (req, res) => {
     const { number1Id, number2Id } = req.body;
 
     try {
-        console.log(`add request received`);
-        console.log(number1Id);
-        console.log(number2Id);
         const number1 = await NumberModel.findById(number1Id);
         const number2 = await NumberModel.findById(number2Id);
 
@@ -36,7 +51,14 @@ app.post('/add', async (req, res) => {
         }
 
         const result = number1.value + number2.value;
-        res.json({ result });
+
+        const savedResult = await ResultModel.create({
+            number1Id: number1._id,
+            number2Id: number2._id,
+            result,
+        });
+
+        res.json({ result, resultId: savedResult._id });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
