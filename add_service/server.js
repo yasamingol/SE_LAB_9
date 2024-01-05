@@ -25,6 +25,9 @@ app.post('/add', async (req, res) => {
     const { number1Id, number2Id } = req.body;
 
     try {
+        console.log(`add request received`);
+        console.log(number1Id);
+        console.log(number2Id);
         const number1 = await NumberModel.findById(number1Id);
         const number2 = await NumberModel.findById(number2Id);
 

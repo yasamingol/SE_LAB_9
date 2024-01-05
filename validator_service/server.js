@@ -25,6 +25,8 @@ app.post('/validate', async (req, res) => {
     const { number } = req.body;
 
     try {
+        console.log(`validate request received`);
+        console.log(number);
         const validatedNumber = await NumberModel.create({ value: number });
         res.json({ valid: true, id: validatedNumber._id });
     } catch (error) {
